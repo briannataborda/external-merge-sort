@@ -1,0 +1,42 @@
+Writing data to data_0.bin
+Writing data to data_1.bin
+Writing data to data_2.bin
+Writing data to data_3.bin
+Writing data to data_4.bin
+Writing data to data_5.bin
+Writing data to data_6.bin
+Writing data to data_7.bin
+Writing data to data_8.bin
+Writing data to data_9.bin
+File data_0.bin is sorted: false
+File data_0.bin contains 1000 elements.
+File data_0.bin is sorted: true
+File data_1.bin is sorted: false
+File data_1.bin contains 1000 elements.
+File data_1.bin is sorted: true
+File data_2.bin is sorted: false
+File data_2.bin contains 1000 elements.
+File data_2.bin is sorted: true
+File data_3.bin is sorted: false
+File data_3.bin contains 1000 elements.
+File data_3.bin is sorted: true
+File data_4.bin is sorted: false
+File data_4.bin contains 1000 elements.
+File data_4.bin is sorted: true
+File data_5.bin is sorted: false
+File data_5.bin contains 1000 elements.
+File data_5.bin is sorted: true
+File data_6.bin is sorted: false
+File data_6.bin contains 1000 elements.
+File data_6.bin is sorted: true
+File data_7.bin is sorted: false
+File data_7.bin contains 1000 elements.
+File data_7.bin is sorted: true
+File data_8.bin is sorted: false
+File data_8.bin contains 1000 elements.
+File data_8.bin is sorted: true
+File data_9.bin is sorted: false
+File data_9.bin contains 1000 elements.
+File data_9.bin is sorted: true
+File mergedData.bin contains 10000 elements.
+File mergedData.bin is sorted: true

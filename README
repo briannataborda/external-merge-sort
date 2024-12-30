@@ -1,0 +1,214 @@
+/**********************************************************
+* External Merge Sorting
+* Brianna Taborda (btabor01)
+* README
+*********************************************************/
+
+(A) 
+Program Purpose: The purpose of this program is to simulate an External Merge
+Sorting algorithm given a range of integers for data to be distributed equally
+amongst a given number of files (a divisor of the range). This program creates
+the range of integers and stores it into a vector of ints and then divides these 
+equally among new binary files. Then we sort the data in each of these binary
+files, merge all of it using buffers so that we remain within our limit of
+working memory, and then write all of the merged data to an output file.
+
+
+(B)
+Acknowledgements: 
+Generating a Vector of Random Ints:
+    https://www.geeksforgeeks.org/how-to-shuffle-a-vector-in-cpp/
+
+Google AI Results
+    Writing to a Binary File   
+    Using Iota to Add Sequential Ints in a Vector
+    Writing a Vector of Ints to a Binary File
+    Using reinterpret_cast<char*>(&data), sizeof(data)
+    Best data structures to use for merging in external merge sort
+    Comparison Operator in Struct
+    Converting argv to an int
+
+Vector Operations
+    https://cplusplus.com/reference/vector/vector/?kw=vector
+
+readBinaryFile Helper Function/ Reading Binary Files
+    https://stackoverflow.com/questions/32668167/read-and-write-binary-file-with-reinterpreter-cast
+    https://cplusplus.com/forum/general/234176/
+    https://coniferproductions.com/posts/2022/10/25/reading-binary-files-cpp/?
+    https://coniferproductions.com/posts/2022/10/25/reading-binary-files-cpp/?
+
+Implementing Insertion Sort
+    https://www.geeksforgeeks.org/insertion-sort-algorithm/
+
+Concept of External Merge Sort
+    https://www.geeksforgeeks.org/external-sorting/
+
+Priority Queue and Min Heap
+    https://www.geeksforgeeks.org/difference-between-min-heap-and-max-heap/
+    https://www.geeksforgeeks.org/priority-queue-set-1-introduction/
+    https://cplusplus.com/reference/queue/priority_queue/
+    https://www.geeksforgeeks.org/priority-queue-using-binary-heap/
+    metro_sim Project
+
+
+(C) 
+Files: 
+
+main.cpp
+    - Takes in commands from the user and calls a function from Sort to run all
+      necessary operations
+
+Sort.h 
+    - Interface of Sort class
+
+Sort.cpp
+    - Implementation of Sort class
+
+DataSort.h
+    - Interface of DataSort class
+
+DataSort.cpp
+    - Implementation of DataSort class
+
+SortChunk.h
+    - Interface of SortChunk class
+
+SortChunk.cpp
+    - Implementation of SortChunk class
+
+MergeChunk.h
+    - Interface of MergeChunk class
+
+MergeChunk.cpp
+    - Implementation of MergeChunk class
+
+unit_tests.h
+    - used for testing for DataSort, SortChunk, MergeChunk
+
+sampleOutput.txt
+    - sample output file to diff program results against
+
+testOutput.txt
+    - results of running my program
+
+README
+    this file
+
+(D) 
+Compile/run:
+Sort:
+    - Compile with
+        make
+    - Run with the appropriate command
+        ./sort <FULL_SIZE> <NUM_FILES>
+
+
+(E)
+Data Structures/Algorithms:
+
+DATASORT:
+In DataSort, writeFile, verifySort, and readBinaryFile are methods that contain 
+the lifecycle of the file so it manages the opening and closing of the file 
+whereas readChunk is more versatile and is called during the lifecycle of a file
+rather than taking on the responsibility of opening and closing the file.
+writeChunkFile had the highest complexity of the functions and used writeFile
+as a helper function to help with modularity. 
+For readChunk, I found that using a buffer would be helpful which according to 
+Google can "read/write larger chunks of data at once, which reduces the number 
+of system calls and improves performance."
+For generateRand, I found code online that gave me the basis for creating
+random numbers within a range where none are duplicates and modified it for my
+program.
+
+SORTCHUNK:
+The sorting algorithm that I implemented was Insertion Sort because it works
+best for smaller datasets and since we'll only be working with less than 1,000
+integers, the context of the program fits that situtation. Insertion Sort works
+best for smallere datasets because it "skips" over the numbers that are already
+sorted and has a worst case time complexity of O(n^2), best case O(n). However, 
+if I were working with a larger dataset, I would have chosen Merge Sort instead
+because it compares all data in the dataset. 
+
+MERGECHUNK:
+In the merge function, I used the updateBuffer function as a helper function.
+To compare values and retrieve the smallest one, I used a priority queue that
+implemented a min-heap and also created a struct called ChunkElement which were
+used to populate the priority queue. These ChunkElements store their int value,
+the index of their file, and a function that creates the min-heap since
+priority queues naturally work as a max-heap. I also created a vector of bools
+to track if a file had reached the end of its data to ensure I didn't try to
+keep reading data where there was no data to be read. 
+To merge multiple sorted files into one, I used buffers (vectors of ints) to 
+temporarily carry chunks of ints for each of the files. These buffers were then
+put in another vector which I used to keep the buffers all in one place for
+easier iteration and access of the chunks for each binary file. To populate
+these buffers, I used a vector of filestreams in order to access multiple files
+at once.
+I used the readChunk function from DataSort for modularity. I had to create a 
+vector of ints to store values of 0's and 1's to keep track of whether a files 
+size header had already been read whichsolved many errors I was receiving.
+I used a struct called ChunkElement which represents each int in a chunk of data
+where the struct held the value of the int, the index of the corresponding file,
+and a function that allowed for the priority queue to act as a min-heap instead
+of a max-heap.
+
+
+(F)
+Testing:
+In order to test that my functions were working correctly, I used unit_tests
+which means I made all my functions private and once I finished testing a class
+I would designate the appropriate private functions back. 
+
+DataSort:
+The most difficult part of testing for me so far was testing to ensure that I
+was writing chunks of data to binary files properly because I had to use online
+resources to figure out how to write a helper function that could read binary
+files and use that in my tests. I used writeFile in my test for readChunk and
+since I knew that FULL_SIZE is greater than 0 and NUM_FILES is a positive
+multiple of FULL_SIZE, I did not test for inputs where there was a remainder in
+chunk size or where chunk size was 0 as that will be taken care of in main where
+the inputs are verified to be acceptable or not. 
+generateRand was also implicitly tested in the other functions every time as it 
+was used to create the test vectors.
+
+Sort Chunk:
+I tested the insertionSort function was running correctly which was easy to test
+and for readAndWrite, I tested three different cases where I sorted a chunk that
+was unsorted, sorted, and in sorted descending order. I also wanted to ensure
+that exceptions were being thrown properly so I tested the function on a chunk
+that contained over 1000 ints. 
+
+MergeChunk:
+Through testing my update buffer function, I learned how important it is 
+to read in size first when reading in a binary file to ensure that the data
+being outputted is correct. Since the buffer size if large, for easier testing
+I changed the buffer size to be 5 so that I could output data to debug and once
+I got those tests working, I changed the code to account for a buffer of 100
+ints for all cases where the data in the vector is greather than, equal to, and
+less than the data the buffer can take. I also changed the function back to void
+becaus I originally had it return a size_t value so that I could be sure the
+correct number of ints were being read into the buffer.
+
+When refilling the buffers, and also again in the merge function, I learned I
+had to store a boolean for every buffer that kept track of whether or not the
+size header had already been read whch I tried to implement at first using a
+vector of booleans with a size of the number of input files; however, I got
+reference errors and then decided to change it to a vector of ints and use the
+values 0,1 to keep track which fixed this error. 
+
+I started small with the buffer size at size 5 with three buffers and then
+created four buffers of size 10 to test the merge function and they all passed.
+
+
+(G)
+Time Spent:
+    11/29: 3 hours
+    12/13: 4 hours
+    12/22: 1 hour
+    12/23: 4 hours
+    12/24: 6 hours
+    12/25: 7.5 hours
+    12/26: 3 hours
+    12/27: 6 hours
+    12/28: 6 hours
+    Total: 40.5 hours
